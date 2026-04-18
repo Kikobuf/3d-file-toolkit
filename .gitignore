@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Common local outputs
+*.html
+*.png
+*.stl
+*.3mf
+
+# Except fixtures (they're part of the repo)
+!tests/fixtures/*.stl
+!tests/fixtures/*.3mf
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Virtual envs
+.venv/
+venv/
+env/

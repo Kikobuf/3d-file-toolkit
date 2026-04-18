@@ -1,0 +1,5 @@
+# Runtime (required)
+numpy>=1.20
+
+# Tests only
+pytest>=7.0 ; extra == "test"

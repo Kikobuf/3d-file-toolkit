@@ -1,0 +1,69 @@
+#!/usr/bin/env python3
+"""
+3mftool — unified entry point for the 3mf-stl-editor scripts.
+
+Usage:
+    3mftool info <file>
+    3mftool render <in> <out.html|out.png>
+    3mftool transform <in> <out> [--scale ...] [--translate ...] [--rotate-x/y/z ...]
+    3mftool convert <in> <out>
+    3mftool merge <file>... -o <out>
+    3mftool split <in> [-o <out>] [--object-index N] [--list]
+    3mftool metadata <in> [<out>] [--set K=V ...] [--remove K ...] [--list]
+
+All subcommands forward any extra args (including --json) to the underlying
+script. Behaviour and exit codes are identical to calling the scripts directly.
+"""
+import os, sys, subprocess
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+SCRIPTS = os.path.join(HERE, "scripts")
+
+SUBCOMMANDS = {
+    "info":      "info.py",
+    "render":    "render.py",
+    "transform": "transform.py",
+    "convert":   "convert.py",
+    "merge":     "merge.py",
+    "split":     "split.py",
+    "metadata":  "edit_metadata.py",
+    "simplify":  "simplify.py",
+    "compat":    "compat.py",
+}
+
+USAGE = """3d-file-toolkit — inspect, edit, convert, and analyze 3D print files
+
+Subcommands:
+  info       inspect geometry + metadata
+  render     export interactive HTML or PNG thumbnail
+  transform  scale / translate / rotate
+  convert    between .stl / .3mf / .obj / .ply
+  merge      combine multiple files
+  split      extract one mesh from a multi-mesh 3MF
+  metadata   edit 3MF metadata fields
+  simplify   reduce triangle count (vertex clustering)
+  compat     detect source software + check compatibility with CAD/slicers
+
+Pass --json to any subcommand for machine-readable output.
+Run '3dft <sub> --help' for full options.
+"""
+
+
+def main():
+    if len(sys.argv) < 2 or sys.argv[1] in ("-h", "--help", "help"):
+        print(USAGE)
+        sys.exit(0 if len(sys.argv) >= 2 else 1)
+
+    sub = sys.argv[1]
+    if sub not in SUBCOMMANDS:
+        print(f"Unknown subcommand: {sub!r}\n", file=sys.stderr)
+        print(USAGE, file=sys.stderr)
+        sys.exit(1)
+
+    script_path = os.path.join(SCRIPTS, SUBCOMMANDS[sub])
+    cmd = [sys.executable, script_path, *sys.argv[2:]]
+    sys.exit(subprocess.call(cmd))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "3d-file-toolkit"
+version = "2.1.0"
+description = "Inspect, edit, convert, and analyze 3D print files (3MF, STL, OBJ, PLY, GLB)"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = ["numpy>=1.20"]
+
+keywords = [
+    "3mf", "stl", "obj", "ply", "glb",
+    "3d-printing", "bambu", "orca-slicer", "prusaslicer",
+    "mesh", "cad", "ai-agent"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.urls]
+Homepage = "https://github.com/Kikobuf/3d-file-toolkit"
+Issues   = "https://github.com/Kikobuf/3d-file-toolkit/issues"
+
+[project.scripts]
+3dft = "toolkit.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["toolkit*"]
+
+[tool.setuptools.package-data]
+"*" = ["scripts/*.py"]
